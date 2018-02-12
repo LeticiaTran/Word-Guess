@@ -23,6 +23,7 @@ class Game
     puts @secret_word.inspect
     @right_guesses = ""#"_" * @secret_word.length#Array.new(@secret_word.length, "_"),
     @wrong_guesses = []
+    @guesses_remaining = 5
 
     # @quessed_secret_word = ""
     # @
@@ -43,6 +44,7 @@ class Game
       @wrong_guesses << user_input
       # TODO: update hangman thing
     end
+    print_ascii_art
   end
 
   def print_current_guessed_letters
@@ -57,7 +59,18 @@ class Game
     # TODO: complete
   end
 
+
+
 private
+
+def print_ascii_art
+puts  "#{"(@)" * @guesses_remaining}"
+puts "  ,\\,\\,|,/,/,
+     _\\\|/_
+    |_____|
+     |   |
+     |___|"
+   end
 
 
 
