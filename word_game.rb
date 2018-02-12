@@ -33,16 +33,13 @@ class Game
   def get_input
     print "Please enter a letter to guess > "
     user_input = gets.chomp.strip
-    if @secret_word.include?(user_input)
-      if !@right_guesses.include?(user_input)
-        @right_guesses = "#{@right_guesses}#{user_input}"
-
-      else
-        puts "You've already guessed #{user_input}."
-      end
+    if @right_guesses.include?(user_input) || @right_guesses.include?(user_input)
+      puts "You've already guessed #{user_input}."
+    elsif @secret_word.include?(user_input)
+      @right_guesses = "#{@right_guesses}#{user_input}"
     else
       @wrong_guesses << user_input
-      # TODO: update hangman thing
+      @guesses_remaining -= 1
     end
     print_ascii_art
   end
