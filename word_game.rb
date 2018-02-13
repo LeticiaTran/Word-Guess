@@ -1,31 +1,21 @@
-# test_game = Game.new
-
-# test_gam
-# word_array = ["b", "a", "r"]
-
-
-
-# # # word_hidden = "___"
-# word = "bar"
-# right_guesses = "a"
+# NAMES!!
+# Ada[9], Ampers
+# Week 2: Word Guess Game Assignment
+# February 14, 2018
 #
-# # puts "#{word - right_guesses}"
-#
-#
-
-
+# This program ...
 
 class Game
 
-
+  #
   def initialize
     @secret_word = generate_random_word#.split("")
     @right_guesses = ""#"_" * @secret_word.length#Array.new(@secret_word.length, "_"),
     @wrong_guesses = []
     @guesses_remaining = 5
-
   end
 
+  #
   def get_input
     print "Please enter a letter to guess > "
     user_input = gets.chomp.strip.downcase
@@ -36,9 +26,9 @@ class Game
     print_ascii_art
   end
 
+  #
   def current_guessed_letters
     return @secret_word.gsub(/[^"#{@right_guesses}"]/,"_")
-    # puts @secret_word.join.gsub(/[^"#{@right_guesses}"]/,"_")
   end
 
   # Prints game directions.
@@ -46,11 +36,10 @@ class Game
     # TODO: complete
   end
 
+  #
   def game_over?
     return @guesses_remaining == 0 || @secret_word == current_guessed_letters
   end
-
-
 
   #
   def display_end_of_game
@@ -60,14 +49,13 @@ class Game
     end
   end
 
-
 private
-
+  #
   def print_wrong_guesses
    puts "Wrong guesses: #{@wrong_guesses * ", "}"
-
   end
 
+  #
   def valid_input(user_input)
     if user_input.length != 1 || !user_input.match?(/[a-z]/)
       puts "Please only enter one letter"
@@ -76,6 +64,7 @@ private
     end
   end
 
+  #
   def process_guess_input(user_input)
     if @right_guesses.include?(user_input) || @wrong_guesses.include?(user_input)
       puts "You've already guessed #{user_input}."
@@ -89,6 +78,7 @@ private
     end
   end
 
+  #
   def print_ascii_art
   puts  " #{"(@)" * @guesses_remaining}"
   puts "    ,\\,\\,|,/,/,
@@ -98,8 +88,7 @@ private
        |___|"
   end
 
-
-
+  #
   def generate_random_word
     return "hello"
     # return %w[foo bar baz].sample
@@ -107,8 +96,7 @@ private
 
 end
 
-
-
+#
 def play_game
   test_game = Game.new
   test_game.print_directions
