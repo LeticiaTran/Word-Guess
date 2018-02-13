@@ -28,9 +28,11 @@ class Game
 
   def get_input
     print "Please enter a letter to guess > "
-    user_input = gets.chomp.strip
+    user_input = gets.chomp.strip.downcase
+    return if valid_input(user_input).nil?
     process_guess_input(user_input)
     puts current_guessed_letters
+    print_wrong_guesses
     print_ascii_art
   end
 
@@ -48,27 +50,40 @@ class Game
     return @guesses_remaining == 0 || @secret_word == current_guessed_letters
   end
 
-  def play_again?
+
+
+  #
+  def display_end_of_game
     if game_over?
-      print "The game is over! Would you like to play again? (Y/N) >"
-      play_again_response = get.chomp.downcase
-      return play_again_response == "y" || play_again_response == "yes"
+      @secret_word == current_guessed_letters ? (puts "You won!") : (puts "You lost!")
+      puts "Final word: #{@secret_word}"
     end
   end
 
 
 private
 
+  def print_wrong_guesses
+   puts "Wrong guesses: #{@wrong_guesses * ", "}"
+
+  end
+
   def valid_input(user_input)
-    # if
+    if user_input.length != 1 || !user_input.match?(/[a-z]/)
+      puts "Please only enter one letter"
+    else
+      return user_input
+    end
   end
 
   def process_guess_input(user_input)
-    if @right_guesses.include?(user_input) || @right_guesses.include?(user_input)
+    if @right_guesses.include?(user_input) || @wrong_guesses.include?(user_input)
       puts "You've already guessed #{user_input}."
     elsif @secret_word.include?(user_input)
       @right_guesses = "#{@right_guesses}#{user_input}"
+      puts "Yay!"
     else
+      puts "Wrong!"
       @wrong_guesses << user_input
       @guesses_remaining -= 1
     end
@@ -94,10 +109,24 @@ end
 
 
 
-test_game = Game.new
+def play_game
+  test_game = Game.new
+  test_game.print_directions
+  until test_game.game_over?
+    test_game.get_input
+  end
+  test_game.display_end_of_game
+end
 
-test_game.print_directions
 
-until test_game.game_over?
-  test_game.get_input
+def play_again?
+  print "The game is over! Would you like to play again? (Y/N) >"
+  play_again_response = gets.chomp.downcase
+  return play_again_response == "y" || play_again_response == "yes"
+end
+
+play_again = true
+while play_again
+  play_game
+  play_again = play_again?
 end
