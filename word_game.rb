@@ -10,13 +10,13 @@
 # right_guesses = "a"
 #
 # # puts "#{word - right_guesses}"
-#
-#
-
+# TEST TEST TEST TEST TEST
+# TEST TEST TEST TEST TEST
+# TEST TEST TEST TEST TEST 
 
 
 class Game
-
+# TEST TEST TEST TEST TEST
 
   def initialize
     @secret_word = generate_random_word#.split("")
