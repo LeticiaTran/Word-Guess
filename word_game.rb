@@ -19,20 +19,51 @@ class Game
 
 
   def initialize
-    @secret_word = generate_random_word.split("")
-    puts @secret_word.inspect
+    @secret_word = generate_random_word#.split("")
     @right_guesses = ""#"_" * @secret_word.length#Array.new(@secret_word.length, "_"),
     @wrong_guesses = []
     @guesses_remaining = 5
 
-    # @quessed_secret_word = ""
-    # @
-    # setup_game
   end
 
   def get_input
     print "Please enter a letter to guess > "
     user_input = gets.chomp.strip
+    process_guess_input(user_input)
+    puts current_guessed_letters
+    print_ascii_art
+  end
+
+  def current_guessed_letters
+    return @secret_word.gsub(/[^"#{@right_guesses}"]/,"_")
+    # puts @secret_word.join.gsub(/[^"#{@right_guesses}"]/,"_")
+  end
+
+  # Prints game directions.
+  def print_directions
+    # TODO: complete
+  end
+
+  def game_over?
+    return @guesses_remaining == 0 || @secret_word == current_guessed_letters
+  end
+
+  def play_again?
+    if game_over?
+      print "The game is over! Would you like to play again? (Y/N) >"
+      play_again_response = get.chomp.downcase
+      return play_again_response == "y" || play_again_response == "yes"
+    end
+  end
+
+
+private
+
+  def valid_input(user_input)
+    # if
+  end
+
+  def process_guess_input(user_input)
     if @right_guesses.include?(user_input) || @right_guesses.include?(user_input)
       puts "You've already guessed #{user_input}."
     elsif @secret_word.include?(user_input)
@@ -41,33 +72,16 @@ class Game
       @wrong_guesses << user_input
       @guesses_remaining -= 1
     end
-    print_ascii_art
   end
 
-  def print_current_guessed_letters
-    # @secret_word.each { |index| if @secret_word[index] }
-
-    puts @secret_word.join.gsub(/[^"#{@right_guesses}"]/,"_")
-    # puts @secret_word.to_s.gsub(/[^"#{@secret_word.to_s}"]/,"_")
+  def print_ascii_art
+  puts  " #{"(@)" * @guesses_remaining}"
+  puts "    ,\\,\\,|,/,/,
+       _\\\|/_
+      |_____|
+       |   |
+       |___|"
   end
-
-  # Prints game directions.
-  def print_directions
-    # TODO: complete
-  end
-
-
-
-private
-
-def print_ascii_art
-puts  "#{"(@)" * @guesses_remaining}"
-puts "  ,\\,\\,|,/,/,
-     _\\\|/_
-    |_____|
-     |   |
-     |___|"
-   end
 
 
 
@@ -80,10 +94,10 @@ end
 
 
 
-
-
 test_game = Game.new
 
-test_game.get_input
-puts
-test_game.print_current_guessed_letters
+test_game.print_directions
+
+until test_game.game_over?
+  test_game.get_input
+end
