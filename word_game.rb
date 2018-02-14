@@ -1,8 +1,44 @@
-# NAMES!!
+# Kirsten Schumy & Leticia Tran
 # Ada[9], Ampers
 # Week 2: Word Guess Game Assignment
 # February 14, 2018
-# This program ...
+
+# SUMMARY:
+
+  # This program is A game which will allow the user to guess a word and get
+  # ASCII-art as feedback on their guesses.
+
+  # The Rules:
+
+    # The word to guess is represented by a row of dashes, giving the number of letters.
+    # If the guess is a letter or number which occurs in the word, the word should be
+    # updated in all of the correct positions. If the suggested letter or number does
+    # not occur in the word, the game should draw or remove one element of the visual
+    # representation as a tally mark. The game is over when:
+    #  - The player completes the word, or guesses the whole word correctly
+    #  - The diagram representing the tally marks is complete
+
+
+  # Primary Requirements:
+
+    # Game Play:
+
+      # The user should be able to input a single letter at a time.
+      # Between each guess, the board should be redrawn to the terminal (ASCII art!).
+      # Display the letters that have already been guessed before each player guesses a
+      # new letter.
+      # The user should be able to win or lose.
+    # Technical:
+
+      # You should be able to play your game by running it using ruby from the terminal.
+      # Use classes to contain your game logic. You may be able to implement your solution
+      # using just one class, but consider how splitting functionality into separate
+      # classes may increase your code's readability and maintainability.
+      # Remember the single responsibility principle!
+
+
+######################################################################
+# GEMS:
 
 require 'faker' # To generate a new random word from a specific theme.
 require 'colorize' # To change colors on display
