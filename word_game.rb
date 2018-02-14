@@ -60,16 +60,11 @@ class Game
 
   #
   def valid_input(user_input)
-    puts
-    if user_input.length != 1 || !user_input.match?(/[a-z]/)
-      if user_input.length == @right_guesses.length
-        check_if_wants_to_guess_word(user_input)
-      else
-        puts print_line_in_blue("Please only enter one letter")
-      end
-    else
-      return user_input
+    return user_input if user_input.length == 1 && user_input.match?(/[a-z]/)
+    if user_input.length == @right_guesses.length
+      check_if_wants_to_guess_word(user_input)
     end
+    puts print_line_in_blue("Please only enter one letter")
   end
 
 
@@ -109,22 +104,22 @@ end
 
 #
 def print_ascii_art
-empty_space = "    "
-larger_empty_space = "     "
-if @guesses_remaining == 1
-  puts "\n(@)".red.blink
-else
-  puts  "\n#{"(@)" * @guesses_remaining}".red
-end
-puts "  ,\\,\\,|,/,/,".green
-puts "     _\\\|/_".green
-print empty_space
-puts"|_____|".yellow.on_light_yellow
-print larger_empty_space
-puts "|   |".yellow.on_light_yellow
-print larger_empty_space
-puts "|___|".yellow.on_light_yellow
-puts
+  empty_space = "    "
+  larger_empty_space = "     "
+  if @guesses_remaining == 1
+    puts "\n(@)".red.blink
+  else
+    puts  "\n#{"(@)" * @guesses_remaining}".red
+  end
+  puts "  ,\\,\\,|,/,/,".green
+  puts "     _\\\|/_".green
+  print empty_space
+  puts"|_____|".yellow.on_light_yellow
+  print larger_empty_space
+  puts "|   |".yellow.on_light_yellow
+  print larger_empty_space
+  puts "|___|".yellow.on_light_yellow
+  puts
 end
 
 #
