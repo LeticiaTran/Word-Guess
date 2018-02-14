@@ -47,7 +47,7 @@ class Game
   # If there are no guesses remainning or if the right word has been found prints if the user has won or lost the game. And displays the word that should be guessed.
   def display_end_of_game
     if game_over?
-      @word.guessed_right_word(@right_guesses) ? (puts "You won!".light_green.bold) : (puts "You lost!".light_red.bold)
+      @word.guessed_right_word(@right_guesses) ? (puts "\n#{"You won!".light_green.bold}") : (puts "You lost!".light_red.bold)
       puts "#{"Final word:".blue} #{@word.secret_word.light_green.bold}"
     end
   end
@@ -78,10 +78,10 @@ class Game
     @right_guesses = final_guess if @word.guessed_right_word(final_guess)
   end
 
-  # Checks if user repeats a previous guessed word and return a warnning message. Otherwise check if guess is right or wrong and displays the result of that guess.  
+  # Checks if user repeats a previous guessed word and return a warnning message. Otherwise check if guess is right or wrong and displays the result of that guess.
   def process_guess_input(user_input)
     if @right_guesses.include?(user_input) || @wrong_guesses.include?(user_input)
-      print_line_in_blue("You've already guessed #{user_input}.")
+      print_line_in_blue("You've already guessed the letter '#{user_input.bold}'!")
     elsif @word.has_letter?(user_input) #@secret_word.include?(user_input)
       update_new_guessed_word(user_input)
       puts "Yay!".green.bold
@@ -197,14 +197,16 @@ def handle_input(input_letter)
 end
 
 
-# # Prints game directions.
+# Prints a welcome message and game directions.
 def print_directions
   puts
 print_in_blue("Welcome to the Word Guess Game!\n\n")
-print_in_blue("When prompted for a letter, type 'exit' to quit the program or")
-print_in_blue("'restart' to give up and start a new game.")
-print_in_blue("This game has three difficulty levels: 'easy' is movie quote,")
-print_in_blue("'medium' is related to food, and 'hard' is a color.\n\n")
+print_in_blue("When prompted for a letter, type #{"exit".bold} to quit the program or")
+print_in_blue("#{"restart".bold} to give up and start a new game.")
+print_in_blue("This game has three difficulty levels with different themes:")
+print_in_blue("#{'Easy'.bold} is random movie quotes.")
+print_in_blue("#{'Medium'.bold} is random dishes.")
+print_in_blue("#{'Hard'.bold} is random color.\n\n")
 end
 
 
