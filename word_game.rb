@@ -5,7 +5,7 @@
 # This program ...
 
 require 'faker' # To generate a new random word from a specific theme.
-require 'colorize'
+require 'colorize' # To change colors on display
 
 ######################################################################
 #CLASS GAME
@@ -16,11 +16,9 @@ class Game
   #
   def initialize(initial_word)
     @word = initial_word
-    # @secret_word = generate_random_word#.split("")
-    @right_guesses = current_guessed_letters #"" #"_" * @secret_word.length#Array.new(@secret_word.length, "_"),
+    @right_guesses = current_guessed_letters
     @wrong_guesses = []
     @guesses_remaining = 5
-
   end
 
   # Get user input for guess:
@@ -29,28 +27,24 @@ class Game
     return gets.chomp.downcase
   end
 
-  #
+  # Print ascii with chances updated, the right guesses and wrong guesses.
   def print_status
     print_ascii_art
     puts right_guesses.green
     print_wrong_guesses
   end
 
-
-  def print_line_in_blue(text_to_print)
-    puts "#{text_to_print}".blue
-  end
-
+  # Sets the number of guesses raainning to zero.
   def give_up
     guess_full_answer("")
   end
 
-  #
+  # Returns true if there are no guesses remainning or if the right word has been found. Otherwise return false.
   def game_over?
     return @guesses_remaining == 0 || @word.guessed_right_word(@right_guesses)
   end
 
-  #
+  # If there are no guesses remainning or if the right word has been found prints if the user has won or lost the game. And displays the word that should be guessed.
   def display_end_of_game
     if game_over?
       @word.guessed_right_word(@right_guesses) ? (puts "You won!".light_green.bold) : (puts "You lost!".light_red.bold)
@@ -73,6 +67,7 @@ class Game
   end
 
 
+  # Prompt the user if wants to use all the guesses remainning to try and guess the whole word(s).
   def check_if_wants_to_guess_word(user_input)
     final_guess = ""
     while final_guess != "y" && final_guess != "n"
@@ -82,12 +77,13 @@ class Game
     guess_full_answer(user_input) if final_guess == "y"
   end
 
+  # Runs if user decides to take the cahnce and guess full answer. Sets the guesses remaining to zero and assign the righ_guesse as this final guess if correct.
   def guess_full_answer(final_guess)
     @guesses_remaining = 0
     @right_guesses = final_guess if @word.guessed_right_word(final_guess)
   end
 
-  #
+  # Checks if user repeats a previous guessed word and return a warnning message. Otherwise check if guess is right or wrong and displays the result of that guess.  
   def process_guess_input(user_input)
     if @right_guesses.include?(user_input) || @wrong_guesses.include?(user_input)
       print_line_in_blue("You've already guessed #{user_input}.")
@@ -102,6 +98,11 @@ class Game
   end
 
 private
+
+# Set string with color blue
+def print_line_in_blue(text_to_print)
+  puts "#{text_to_print}".blue
+end
 
 def current_guessed_letters
   return @word.secret_word.gsub(/[^"#{@right_guesses}\s\W"]/,"_")
