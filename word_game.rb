@@ -57,7 +57,13 @@ class Game
     end
   end
 
-  #
+  # Method to return the user input if it has only one character and if that
+  # character is a letter (from a to z).
+  # It will prompt redirect to another method that will prompt the user if they
+  # want to guess the whole word/sentece in case this input has the same length
+  # as the secret word to be guessed.
+  # If it doesnt comply with the requirements and it i not the same size as the
+  # secret word, it will display a message explainning the requirements.
   def valid_input(user_input)
     return user_input if user_input.length == 1 && user_input.match?(/[a-z]/)
     if user_input.length == @right_guesses.length
@@ -78,14 +84,14 @@ class Game
     guess_full_answer(user_input) if final_guess == "y"
   end
 
-  # # Method runned if user decides to take the cahnce and guess full answer. Sets the
+  # Method runned if user decides to take the cahnce and guess full answer. Sets the
   # guesses remaining to zero and assign the righ_guesse as this final guess if correct.
   def guess_full_answer(final_guess)
     @guesses_remaining = 0
     @right_guesses = final_guess if @word.guessed_right_word(final_guess)
   end
 
-  # # Method to checks if user repeats a previous guessed word and return a warnning message.
+  # Method to checks if user repeats a previous guessed word and return a warnning message.
   # Otherwise check if guess is right or wrong and displays the result of that guess.
   # If guess is wrong, it will subtract the variable containning the remainig guesses
   # by one.
