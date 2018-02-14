@@ -3,7 +3,7 @@
 # Week 2: Word Guess Game Assignment
 # February 14, 2018
 # This program ...
-
+require 'pry'
 require 'faker' # To generate a new random word from a specific theme.
 require 'colorize' # To change colors on display
 
@@ -41,7 +41,7 @@ class Game
 
   # Returns true if there are no guesses remainning or if the right word has been found. Otherwise return false.
   def game_over?
-    return @guesses_remaining == 0 || @word.guessed_right_word(@right_guesses)
+    return @guesses_remaining < 1  || @word.guessed_right_word(@right_guesses)
   end
 
   # If there are no guesses remainning or if the right word has been found prints if the user has won or lost the game. And displays the word that should be guessed.
@@ -58,7 +58,7 @@ class Game
     if user_input.length == @right_guesses.length
       check_if_wants_to_guess_word(user_input)
     end
-    puts print_line_in_blue("Please only enter one letter")
+    puts print_line_in_blue("Please only enter #{"one".bold} letter")
   end
 
 
@@ -191,7 +191,7 @@ end
 
 def handle_input(input_letter)
   if input_letter == "exit"
-    print "Are you sure you want to exit? (y/n) >".blue
+    print "Are you sure you want to exit? (y/n) > ".blue
     exit if gets.chomp.downcase == "y"
   end
 end
@@ -238,7 +238,7 @@ end
 
 #
 def play_again?
-  print_in_blue("\nThe game is over! Would you like to play again? (Y/N) >")
+  print "\nThe game is over! Would you like to play again? (Y/N) >".center(60).blue
   play_again_response = gets.chomp.downcase
   return play_again_response == "y" || play_again_response == "yes"
 end
@@ -249,3 +249,4 @@ while play_again
   play_game
   play_again = play_again?
 end
+biding.pry
