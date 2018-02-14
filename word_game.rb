@@ -25,34 +25,24 @@ class Game
 
   # Get user input for guess:
   def get_input
-    print "Please enter a letter to guess > "
+    print "\nPlease enter a letter to guess > ".blue
     return gets.chomp.downcase
-
   end
 
   #
   def print_status
     print_ascii_art
+    puts right_guesses.green
     print_wrong_guesses
-    puts right_guesses
-  end
-# Frankly, my dear, I don’t give a damn.
-
-  # # Prints game directions.
-  def print_directions
-    # TODO: complete
   end
 
-  def print_theme
-    case @word.difficulty_level
-    when "easy"
-      puts "The secret word will be a color."
-    when "medium"
-      puts "The secret word(s) is related to food."
-    when "hard"
-      puts "The secret sentence is a movie quote."
-    end
-    puts
+
+  def print_line_in_blue(text_to_print)
+    puts "#{text_to_print}".blue
+  end
+
+  def give_up
+    guess_full_answer("")
   end
 
   #
@@ -63,19 +53,19 @@ class Game
   #
   def display_end_of_game
     if game_over?
-      puts @right_guesses
-      @word.guessed_right_word(@right_guesses) ? (puts "You won!") : (puts "You lost!")
-      puts "Final word: #{@word.secret_word}"
+      @word.guessed_right_word(@right_guesses) ? (puts "You won!".light_green.bold) : (puts "You lost!".light_red.bold)
+      puts "#{"Final word:".blue} #{@word.secret_word.light_green.bold}"
     end
   end
 
   #
   def valid_input(user_input)
+    puts
     if user_input.length != 1 || !user_input.match?(/[a-z]/)
       if user_input.length == @right_guesses.length
         check_if_wants_to_guess_word(user_input)
       else
-        puts "Please only enter one letter"
+        puts print_line_in_blue("Please only enter one letter")
       end
     else
       return user_input
@@ -86,15 +76,13 @@ class Game
   def check_if_wants_to_guess_word(user_input)
     final_guess = ""
     while final_guess != "y" && final_guess != "n"
-      print "Are you sure you want to bet all of your lives on this guess? (y/n)"
+      print "Are you sure you want to bet all of your lives on this guess? (y/n)".blue
       final_guess = gets.chomp.downcase
     end
     guess_full_answer(user_input) if final_guess == "y"
   end
 
   def guess_full_answer(final_guess)
-    print "Final guess: "
-    puts final_guess
     @guesses_remaining = 0
     @right_guesses = final_guess if @word.guessed_right_word(final_guess)
   end
@@ -102,12 +90,12 @@ class Game
   #
   def process_guess_input(user_input)
     if @right_guesses.include?(user_input) || @wrong_guesses.include?(user_input)
-      puts "You've already guessed #{user_input}."
+      print_line_in_blue("You've already guessed #{user_input}.")
     elsif @word.has_letter?(user_input) #@secret_word.include?(user_input)
       update_new_guessed_word(user_input)
-      puts "Yay!"
+      puts "Yay!".green.bold
     else
-      puts "Wrong!"
+      puts "Wrong!".red.bold
       @wrong_guesses << user_input
       @guesses_remaining -= 1
     end
@@ -121,12 +109,22 @@ end
 
 #
 def print_ascii_art
-puts  "#{"(@)" * @guesses_remaining}"
-puts "  ,\\,\\,|,/,/,"
-puts "     _\\\|/_"
-puts "    |_____|"
-puts "     |   |"
-puts "     |___|"
+empty_space = "    "
+larger_empty_space = "     "
+if @guesses_remaining == 1
+  puts "\n(@)".red.blink
+else
+  puts  "\n#{"(@)" * @guesses_remaining}".red
+end
+puts "  ,\\,\\,|,/,/,".green
+puts "     _\\\|/_".green
+print empty_space
+puts"|_____|".yellow.on_light_yellow
+print larger_empty_space
+puts "|   |".yellow.on_light_yellow
+print larger_empty_space
+puts "|___|".yellow.on_light_yellow
+puts
 end
 
 #
@@ -142,7 +140,7 @@ end
 
 #
 def print_wrong_guesses
-  puts "Wrong guesses: #{@wrong_guesses * ", "}" if !@wrong_guesses.empty?
+  puts "Wrong guesses: #{@wrong_guesses * ", "}".red if !@wrong_guesses.empty?
 end
 
 end
@@ -163,11 +161,11 @@ class Word
   def generate_random_word
     case @difficulty_level
     when "easy"
-      return Faker::Color.color_name
+      return Faker::Movie.quote
     when "medium"
       return Faker::Food.dish
     when "hard"
-      return "Frankly, my dear, I don’t give a damn."#Faker::Movie.quote
+      return Faker::Color.color_name
     end
   end
 
@@ -189,31 +187,71 @@ end
 def get_difficulty_level
   difficulty = ""
   until difficulty == "easy" ||  difficulty == "medium" || difficulty == "hard"
-    print "Please select a difficulty level (easy, medium, hard) > "
+    print_in_blue("Please select a difficulty level (easy, medium, hard) > ")
     difficulty = gets.chomp.strip
   end
   return difficulty
 end
 
+
+def print_in_blue(text_to_print)
+  print "#{text_to_print}".blue
+end
+
+def handle_input(input_letter)
+
+
+  if input_letter == "exit"
+    print "Are you sure you want to exit? (y/n) >".blue
+    exit if gets.chomp.downcase == "y"
+  end
+end
+
+# Frankly, my dear, I don’t give a damn.
+
+# # Prints game directions.
+def print_directions
+  # TODO: complete
+end
+
+def print_line_in_blue(text_to_print)
+  puts "#{text_to_print}".blue
+end
+
+def print_theme(difficulty_level)
+  case difficulty_level
+  when "easy"
+    print_line_in_blue("The secret sentence is a movie quote.")
+  when "medium"
+    print_line_in_blue("The secret word(s) is related to food.")
+  when "hard"
+    print_line_in_blue("The secret word will be a color.")
+  end
+  puts
+end
 #
 def play_game
   difficulty_level = get_difficulty_level
   word_game = Game.new(Word.new(difficulty_level))
-  word_game.print_directions
-  word_game.print_theme
-  puts word_game.right_guesses
+  print_directions
+  print_theme(difficulty_level)
   until word_game.game_over?
+    word_game.print_status
     input_letter = word_game.get_input
+    handle_input(input_letter)
+    if input_letter == "restart"
+      word_game.give_up
+      break
+    end
     next if !word_game.valid_input(input_letter)
     word_game.process_guess_input(input_letter)
-    word_game.print_status
   end
   word_game.display_end_of_game
 end
 
 #
 def play_again?
-  print "The game is over! Would you like to play again? (Y/N) >"
+  print_in_blue("\nThe game is over! Would you like to play again? (Y/N) >")
   play_again_response = gets.chomp.downcase
   return play_again_response == "y" || play_again_response == "yes"
 end
