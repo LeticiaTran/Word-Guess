@@ -131,11 +131,6 @@ end
 def update_new_guessed_word(user_input)
   @word.secret_word.length.times { |index| @right_guesses[index] =
     @word.secret_word[index] if @word.secret_word[index].downcase == user_input }
-   # @word.secret_word.length.times do |index|
-   #   if @word.secret_word[index].downcase == user_input
-   #     @right_guesses[index] = @word.secret_word[index]
-   #   end
-   # end
 end
 
 #
@@ -187,7 +182,7 @@ end
 def get_difficulty_level
   difficulty = ""
   until difficulty == "easy" ||  difficulty == "medium" || difficulty == "hard"
-    print_in_blue("Please select a difficulty level (easy, medium, hard) > ")
+    print "Please select a difficulty level (easy, medium, hard) > ".blue
     difficulty = gets.chomp.strip
   end
   return difficulty
@@ -199,42 +194,36 @@ def print_in_blue(text_to_print)
 end
 
 def handle_input(input_letter)
-
-
   if input_letter == "exit"
     print "Are you sure you want to exit? (y/n) >".blue
     exit if gets.chomp.downcase == "y"
   end
 end
 
-# Frankly, my dear, I don’t give a damn.
 
 # # Prints game directions.
 def print_directions
-  # TODO: complete
-end
-
-def print_line_in_blue(text_to_print)
-  puts "#{text_to_print}".blue
-end
-
-def print_theme(difficulty_level)
-  case difficulty_level
-  when "easy"
-    print_line_in_blue("The secret sentence is a movie quote.")
-  when "medium"
-    print_line_in_blue("The secret word(s) is related to food.")
-  when "hard"
-    print_line_in_blue("The secret word will be a color.")
-  end
   puts
+print_in_blue("Welcome to the Word Guess Game!\n\n")
+print_in_blue("When prompted for a letter, type 'exit' to quit the program or")
+print_in_blue("'restart' to give up and start a new game.")
+print_in_blue("This game has three difficulty levels: 'easy' is movie quote,")
+print_in_blue("'medium' is related to food, and 'hard' is a color.\n\n")
 end
+
+
+
+
+def print_in_blue(text_to_print)
+  puts "#{text_to_print}".center(60).blue
+end
+
+
 #
 def play_game
+  print_directions
   difficulty_level = get_difficulty_level
   word_game = Game.new(Word.new(difficulty_level))
-  print_directions
-  print_theme(difficulty_level)
   until word_game.game_over?
     word_game.print_status
     input_letter = word_game.get_input
